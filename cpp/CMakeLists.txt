@@ -1,0 +1,8 @@
+set(TARGET_NAME ${PROJECT_NAME})
+
+file(GLOB CXX_SRC_FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/*.c
+    )
+
+add_library(${TARGET_NAME}_cxx SHARED ${CXX_SRC_FILES})
