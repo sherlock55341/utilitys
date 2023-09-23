@@ -18,8 +18,6 @@ public:
         std::copy(other.begin(), other.end(), host_);
     }
 
-    Data(const Data& other) = delete;
-
     Data& mh(int N){
         assert(N > 0);
         assert(host_ == nullptr);
@@ -96,6 +94,16 @@ public:
 
     size_t dsize() const{
         return dsize_;
+    }
+
+    T& operator[](int x){
+        assert(x >= 0 && x < size_);
+        return host_[x];
+    }
+
+    T operator[](int x) const{
+        assert(x >= 0 && x < size_);
+        return host_[x];
     }
 };
 }  // namespace cuda

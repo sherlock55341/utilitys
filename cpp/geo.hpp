@@ -60,13 +60,13 @@ template <typename T> class RectT {
 
     T hy() const { return hy_; }
 
-    void setlx(int lx_) { lx_ = _lx; }
+    void setlx(int _lx) { lx_ = _lx; }
 
-    void setly(int ly_) { ly_ = _ly; }
+    void setly(int _ly) { ly_ = _ly; }
 
-    void sethx(int hx_) { hx_ = _hx; }
+    void sethx(int _hx) { hx_ = _hx; }
 
-    void sethy(int hy_) { hy_ = _hy; }
+    void sethy(int _hy) { hy_ = _hy; }
 
     void updx(int x) {
         if (x < lx_)
@@ -86,55 +86,59 @@ template <typename T> class RectT {
         updx(p.x());
         updy(p.y());
     }
+
+    T hpwl() const { return hx_ - lx_ + hy_ - ly_; }
+
+    T area() const { return (hx_ - lx_) * (hy_ - ly_); }
 };
 
-template <typename T> class PointTOnLayer : public PointT {
+template <typename T> class PointTOnLayer : public PointT<T> {
   private:
     T l_;
 
   public:
     PointTOnLayer(T _l = T(), T _x = T(), T _y = T())
-        : PointT(_x, _y), l_(_l) {}
+        : PointT<T>(_x, _y), l_(_l) {}
 
     T l() const { return l_; }
 
     void setl(int _l) { l_ = _l; }
 
     bool operator==(const PointTOnLayer<T> &other) const {
-        return l() == other.l() && x() == other.x() && y() == other.y();
+        return l() == other.l() && PointT<T>::x() == other.PointT<T>::x() && PointT<T>::y() == other.PointT<T>::y();
     }
 
     bool operator!=(const PointTOnLayer<T> &other) const {
-        return l() != other.l() || x() != other.x() || y() != other.y();
+        return l() != other.l() || PointT<T>::x() != other.PointT<T>::x() || PointT<T>::y() != other.PointT<T>::y();
     }
 
     bool operator<(const PointTOnLayer<T> &other) const {
         if (l() != other.l())
             return l() < other.l();
-        if (x() != other.x())
-            return x() < other.x();
-        return y() < other.y();
+        if (PointT<T>::x() != other.PointT<T>::x())
+            return PointT<T>::x() < other.PointT<T>::x();
+        return PointT<T>::y() < other.PointT<T>::y();
     }
 
     bool operator>(const PointTOnLayer<T> &other) const {
         if (l() != other.l())
             return l() > other.l();
-        if (x() != other.x())
-            return x() > other.x();
-        return y() > other.y();
+        if (PointT<T>::x() != other.PointT<T>::x())
+            return PointT<T>::x() > other.PointT<T>::x();
+        return PointT<T>::y() > other.PointT<T>::y();
     }
 };
 
-template <typename T> class RectTOnLayer : public RectT {
+template <typename T> class RectTOnLayer : public RectT<T> {
   private:
     T l_;
 
   public:
     RectTOnLayer(T _l = T(), T _lx = T(), T _ly = T(), T _hx = T(), T _hy = T())
-        : RectT(_lx, _ly, _hx, _hy), l_(_l) {}
+        : RectT<T>(_lx, _ly, _hx, _hy), l_(_l) {}
 
     RectTOnLayer<T>(const PointTOnLayer<T> &p)
-        : RectT(p.x(), p.y(), p.x(), p.y()), l_(p.l()) {}
+        : RectT<T>(p.x(), p.y(), p.x(), p.y()), l_(p.l()) {}
 
     T l() const { return l_; }
 
