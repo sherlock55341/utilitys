@@ -87,9 +87,9 @@ template <typename T> class RectT {
         updy(p.y());
     }
 
-    T hpwl() const { return hx_ - lx_ + hy_ - ly_; }
+    T hpwl() const { return (hx_ - lx_ + 1) + (hy_ - ly_ + 1);}
 
-    T area() const { return (hx_ - lx_) * (hy_ - ly_); }
+    T area() const { return (hx_ - lx_ + 1) * (hy_ - ly_ + 1); }
 };
 
 template <typename T> class PointTOnLayer : public PointT<T> {
