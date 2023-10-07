@@ -31,4 +31,14 @@ void tools::LogWithTimer::operator()(const char* __restrict__ format) const {
     fflush(stdout);
 }
 
+void tools::LogWithTimer::operator()(bool enable, const char* __restrict__ format) const {
+    if(verbose_ == 0 || enable == 0){
+        return ;
+    }
+    printf("[%7.3f s]", timer_.elapse());
+    printf(format);
+    fflush(stdout);
+}
+
+
 UTILS_END

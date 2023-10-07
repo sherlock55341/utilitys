@@ -43,6 +43,18 @@ class LogWithTimer {
 
     void operator()(const char* __restrict__ format) const;
 
+    template<typename ...Args>
+    void operator()(bool enable, const char* __restrict__ format, Args&&... args) const{
+        if(verbose_ == 0 || enable == 0){
+            return ;
+        }
+        printf("[%7.3f s]", timer_.elapse());
+        printf(format, args...);
+        fflush(stdout);
+    }
+
+    void operator()(bool enable, const char* __restrict__ format) const;
+
 };
 }  // namespace tools
 
