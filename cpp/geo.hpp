@@ -92,6 +92,11 @@ template <typename T> class RectT {
     T area() const { return (hx_ - lx_ + 1) * (hy_ - ly_ + 1); }
 };
 
+template<typename T>
+bool hasIntersect(const RectT<T>& lhs, const RectT<T>& rhs){
+    return lhs.lx() <= rhs.hx() && lhs.hx() >= rhs.lx() && lhs.ly() <= rhs.hy() && lhs.hy() >= rhs.ly();
+}
+
 template <typename T> class PointTOnLayer : public PointT<T> {
   private:
     T l_;
