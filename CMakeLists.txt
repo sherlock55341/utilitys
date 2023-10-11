@@ -4,7 +4,7 @@ project(utils_lib C CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_definitions(-Wno-format-security)
+add_definitions(-Wno-format-security -Wno-long-long)
 
 add_subdirectory(cpp)
 
