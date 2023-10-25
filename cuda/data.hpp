@@ -18,7 +18,7 @@ public:
         std::copy(other.begin(), other.end(), host_);
     }
 
-    Data& mh(int N){
+    Data& mh(size_t N){
         assert(N > 0);
         assert(host_ == nullptr);
         host_ = (T*) malloc(sizeof(T) * N);
@@ -26,7 +26,7 @@ public:
         return *this;
     }
 
-    Data& md(int N){
+    Data& md(size_t N){
         assert(N > 0);
         assert(device_ == nullptr);
         cuda::mallocDevice((void**) &device_, sizeof(T) * N);
@@ -34,7 +34,7 @@ public:
         return *this;
     }
 
-    Data& mhd(int N){
+    Data& mhd(size_t N){
         assert(N > 0);
         assert(host_ == nullptr);
         assert(device_ == nullptr);
@@ -96,12 +96,12 @@ public:
         return dsize_;
     }
 
-    T& operator[](int x){
+    T& operator[](size_t x){
         assert(x >= 0 && x < size_);
         return host_[x];
     }
 
-    T operator[](int x) const{
+    T operator[](size_t x) const{
         assert(x >= 0 && x < size_);
         return host_[x];
     }
