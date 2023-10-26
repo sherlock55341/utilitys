@@ -28,7 +28,7 @@ void distinct(std::vector<T> &arr) {
 template <typename T, class comp>
 void distinct(std::vector<T> &arr, comp cmp) {
   std::sort(arr.begin(), arr.end(), cmp);
-  arr.erase(std::unique(arr.begin(), arr.end(), cmp), arr.end());
+  arr.erase(std::unique(arr.begin(), arr.end()), arr.end());
 }
 
 enum MultiThreadStrategy { GREEDY, SEQ };
