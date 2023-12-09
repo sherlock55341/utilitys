@@ -58,6 +58,13 @@ class LogWithTimer {
     void operator()(bool enable, const char *__restrict__ format) const;
 };
 
+//Unit : MB
+class MemReporter{
+public:
+    static double getCurrent();
+    static double getPeak();
+};
+
 class BatchGenerator {
   public:
 

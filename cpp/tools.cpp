@@ -1,4 +1,13 @@
 #include "tools.hpp"
+#include <iomanip>
+#include <sstream>
+#if defined(__unix__)
+#include <sys/resource.h>
+#include <unistd.h>
+#elif defined(_WIN32)
+#include <windows.h>
+#include <psapi.h>
+#endif
 #include <boost/geometry.hpp>
 #include <boost/geometry/index/rtree.hpp>
 #include <boost/geometry/geometries/box.hpp>
@@ -93,6 +102,42 @@ tools::BatchGenerator::gen(const std::vector<geo::RectT<int>> &boxes,
         }
     }
     return batches;
+}
+
+double tools::MemReporter::getCurrent(){
+#if defined(__unix__)
+    long rss = 0;
+    FILE* fp = nullptr;
+    if((fp = fopen("/proc/self/statm", "r")) == nullptr){
+        return 0.0;
+    }
+    if(fscanf(fp, "%*s%ld", &rss) != 1){
+        fclose(fp);
+        return 0.0;
+    }
+    fclose(fp);
+    return rss * sysconf(_SC_PAGESIZE) / 1048576.0;
+#elif defined(_WIN32)
+    PROCESS_MEMORY_COUNTERS info;
+    GetProcessMemoryInfo(GetCurrentProcess(), &info, sizeof(info));
+    return info.WorkingSetSize / 1048576.0;
+#else
+    return 0.0;
+#endif
+}
+
+double tools::MemReporter::getPeak(){
+#if defined(__unix__)
+    struct rusage rusage;
+    getrusage(RUSAGE_SELF, &rusage);
+    return rusage.ru_maxrss / 1024.0;
+#elif defined(_WIN32)
+    PROCESS_MEMORY_COUNTERS info;
+    GetProcessMemoryInfo(GetCurrentProcess(), &info, sizeof(info));
+    return info.PeakWorkingSetSize / 1048576.0;
+#else
+    return 0.0;
+#endif
 }
 
 UTILS_END
