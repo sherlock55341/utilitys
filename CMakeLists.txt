@@ -8,8 +8,6 @@ add_definitions(-Wno-format-security -Wno-long-long)
 
 add_subdirectory(cpp)
 
-find_package(CUDA)
-
 if (CUDA_FOUND)
 
 add_subdirectory(cuda)
