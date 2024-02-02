@@ -22,10 +22,10 @@ void cuda::d2h(void *dst, void *src, size_t size){
     cudaMemcpy(dst, src, size, cudaMemcpyDeviceToHost);
 }
 
-void cuda::err(){
+void cuda::err(const char* file, int line){
     cudaError_t err = cudaGetLastError();
     if(err != cudaSuccess){
-        std::cout << "CUDA error: " << cudaGetErrorString(err) << std::endl;
+        std::cout << "[CUDA ERROR] : FILE [" << file << "] LINE[" << line << "] " << cudaGetErrorString(err) << std::endl;
         assert(err == cudaSuccess);
         exit(1);
     }

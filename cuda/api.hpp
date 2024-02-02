@@ -16,7 +16,7 @@ void h2d(void* dst, void* src, size_t size);
 
 void d2h(void* dst, void* src, size_t size);
 
-void err();
+void err(const char* file, int line);
 }  // namespace cuda
 
 UTILS_END
