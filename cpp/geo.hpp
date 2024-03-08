@@ -5,12 +5,11 @@
 UTILS_BEGIN
 
 namespace geo {
-template <typename T>
-class PointT {
-   private:
+template <typename T> class PointT {
+  private:
     T x_, y_;
 
-   public:
+  public:
     PointT(T _x = T(), T _y = T()) : x_(_x), y_(_y) {}
 
     T x() const { return x_; }
@@ -30,22 +29,23 @@ class PointT {
     }
 
     bool operator<(const PointT<T> &other) const {
-        if (x() != other.x()) return x() < other.x();
+        if (x() != other.x())
+            return x() < other.x();
         return y() < other.y();
     }
 
     bool operator>(const PointT<T> &other) const {
-        if (x() != other.x()) return x() > other.x();
+        if (x() != other.x())
+            return x() > other.x();
         return y() > other.y();
     }
 };
 
-template <typename T>
-class RectT {
-   private:
+template <typename T> class RectT {
+  private:
     T lx_, ly_, hx_, hy_;
 
-   public:
+  public:
 #ifdef __CUDACC__
     __device__ __host__
 #endif
@@ -91,45 +91,49 @@ class RectT {
     __host__ __device__
 #endif
         void
-        setlx(int _lx) {
+        setlx(T _lx) {
         lx_ = _lx;
     }
 #ifdef __CUDACC__
     __host__ __device__
 #endif
         void
-        setly(int _ly) {
+        setly(T _ly) {
         ly_ = _ly;
     }
 #ifdef __CUDACC__
     __host__ __device__
 #endif
         void
-        sethx(int _hx) {
+        sethx(T _hx) {
         hx_ = _hx;
     }
 #ifdef __CUDACC__
     __host__ __device__
 #endif
         void
-        sethy(int _hy) {
+        sethy(T _hy) {
         hy_ = _hy;
     }
 #ifdef __CUDACC__
     __host__ __device__
 #endif
         void
-        updx(int x) {
-        if (x < lx_) lx_ = x;
-        if (x > hx_) hx_ = x;
+        updx(T x) {
+        if (x < lx_)
+            lx_ = x;
+        if (x > hx_)
+            hx_ = x;
     }
 #ifdef __CUDACC__
     __host__ __device__
 #endif
         void
-        updy(int y) {
-        if (y < ly_) ly_ = y;
-        if (y > hy_) hy_ = y;
+        updy(T y) {
+        if (y < ly_)
+            ly_ = y;
+        if (y > hy_)
+            hy_ = y;
     }
 #ifdef __CUDACC__
     __device__ __host__
@@ -161,12 +165,11 @@ bool hasIntersect(const RectT<T> &lhs, const RectT<T> &rhs) {
            lhs.ly() <= rhs.hy() && lhs.hy() >= rhs.ly();
 }
 
-template <typename T>
-class PointTOnLayer : public PointT<T> {
-   private:
+template <typename T> class PointTOnLayer : public PointT<T> {
+  private:
     T l_;
 
-   public:
+  public:
     PointTOnLayer(T _l = T(), T _x = T(), T _y = T())
         : PointT<T>(_x, _y), l_(_l) {}
 
@@ -185,26 +188,27 @@ class PointTOnLayer : public PointT<T> {
     }
 
     bool operator<(const PointTOnLayer<T> &other) const {
-        if (l() != other.l()) return l() < other.l();
+        if (l() != other.l())
+            return l() < other.l();
         if (PointT<T>::x() != other.PointT<T>::x())
             return PointT<T>::x() < other.PointT<T>::x();
         return PointT<T>::y() < other.PointT<T>::y();
     }
 
     bool operator>(const PointTOnLayer<T> &other) const {
-        if (l() != other.l()) return l() > other.l();
+        if (l() != other.l())
+            return l() > other.l();
         if (PointT<T>::x() != other.PointT<T>::x())
             return PointT<T>::x() > other.PointT<T>::x();
         return PointT<T>::y() > other.PointT<T>::y();
     }
 };
 
-template <typename T>
-class RectTOnLayer : public RectT<T> {
-   private:
+template <typename T> class RectTOnLayer : public RectT<T> {
+  private:
     T l_;
 
-   public:
+  public:
 #ifdef __CUDACC__
     __device__ __host__
 #endif
@@ -240,21 +244,29 @@ class RectTOnLayer : public RectT<T> {
     }
 };
 
-template <typename T>
-class IntvlT {
-   private:
+template <typename T> class IntvlT {
+  private:
     T lo_, hi_;
 
-   public:
-    IntvlT(T _lo = T(), T _hi = T()) : lo_(_lo), hi_(_hi) {}
-
+  public:
+    IntvlT()
+        : lo_(std::numeric_limits<T>::has_infinity
+                  ? std::numeric_limits<T>::infinity()
+                  : std::numeric_limits<T>::max()),
+          hi_(std::numeric_limits<T>::has_infinity
+                  ? -std::numeric_limits<T>::infinity()
+                  : std::numeric_limits<T>::lowest()) {}
     IntvlT(T x) : lo_(x), hi_(x) {}
+
+    IntvlT(T _lo, T _hi) : lo_(_lo), hi_(_hi) {}
 
     T lo() const { return lo_; }
 
     T hi() const { return hi_; }
 
     T len() const { return hi_ - lo_ + 1; }
+
+    T range() const {return hi_ - lo_;}
 
     T center() const { return (lo_ + hi_) / 2; }
 
@@ -264,11 +276,20 @@ class IntvlT {
 
     bool isValid() const { return lo_ <= hi_; }
 
+    void update(T x) {
+        if (lo_ > x) {
+            lo_ = x;
+        }
+        if (hi_ < x) {
+            hi_ = x;
+        }
+    }
+
     IntvlT<T> intersect(const IntvlT<T> &other) const {
         return IntvlT<T>(std::max(lo(), other.lo()),
                          std::min(hi(), other.hi()));
     }
 };
-}  // namespace geo
+} // namespace geo
 
 UTILS_END
