@@ -22,6 +22,10 @@ void cuda::d2h(void *dst, void *src, size_t size){
     cudaMemcpy(dst, src, size, cudaMemcpyDeviceToHost);
 }
 
+void cuda::d2d(void *dst, void *src, size_t size){
+    cudaMemcpy(dst, src, size, cudaMemcpyDeviceToDevice);
+}
+
 void cuda::err(const char* file, int line){
     cudaError_t err = cudaGetLastError();
     if(err != cudaSuccess){
