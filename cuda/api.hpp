@@ -6,6 +6,8 @@ UTILS_BEGIN
 
 namespace cuda {
 
+void setDevice(int deviceIdx);
+
 void mallocDevice(void** ptr, size_t size);
 
 void freeDevice(void* ptr);

@@ -6,4 +6,4 @@ file(GLOB CUDA_SRC_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/*.c
 )
 
-cuda_add_library(${TARGET_NAME}_cuda SHARED ${CUDA_SRC_FILES})
+cuda_add_library(${TARGET_NAME}_cuda STATIC ${CUDA_SRC_FILES})
