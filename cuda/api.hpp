@@ -5,6 +5,7 @@
 UTILS_BEGIN
 
 namespace cuda {
+void warmUpDevice(int deviceIdx);
 
 void setDevice(int deviceIdx);
 

@@ -1,6 +1,11 @@
 #include "api.hpp"
 
 namespace utils::cuda {
+void warmUpDevice(int deviceIdx){
+    cudaSetDevice(deviceIdx);
+    cudaFree(0);
+}
+
 void setDevice(int deviceIdx) { cudaSetDevice(deviceIdx); }
 
 void mallocDevice(void **ptr, size_t size) { cudaMalloc(ptr, size); }
