@@ -1,3 +1,13 @@
+/**
+ * @file tools.cpp
+ * @author Chunyuan Zhao (zhaochunyuan@stu.pku.edu.cn)
+ * @brief 
+ * @version 0.1
+ * @date 2024-05-09
+ * 
+ * @copyright Copyright (c) 2024
+ * 
+ */
 #include "tools.hpp"
 #include <iomanip>
 #include <sstream>
@@ -8,16 +18,6 @@
 #include <windows.h>
 #include <psapi.h>
 #endif
-#include <boost/geometry.hpp>
-#include <boost/geometry/index/rtree.hpp>
-#include <boost/geometry/geometries/box.hpp>
-#include <boost/geometry/geometries/point.hpp>
-
-namespace bg = boost::geometry;
-namespace bgi = boost::geometry::index;
-using bp = bg::model::point<int, 2, bg::cs::cartesian>;
-using bb = bg::model::box<bp>;
-using rt = bgi::rtree<std::pair<bb, int>, bgi::rstar<32>>;
 
 UTILS_BEGIN
 
@@ -72,36 +72,6 @@ static bool hasConflict(rt &rtree, const geo::RectT<int> &box, int target) {
         }
     }
     return false;
-}
-
-std::vector<std::vector<int>>
-tools::BatchGenerator::gen(const std::vector<geo::RectT<int>> &boxes,
-                           const std::vector<int> &targets, int maxBatch,
-                           int maxPace) {
-    std::vector<std::vector<int>> batches;
-    rt rtree;
-    std::vector<bool> chosen(targets.size(), false);
-    int last = 0;
-    while (last < targets.size()) {
-        rtree.clear();
-        batches.emplace_back();
-        auto &batch = batches.back();
-        for (int i = last; i < targets.size(); i++) {
-            if (batch.size() == maxBatch || i - last == maxPace)
-                break;
-            if (chosen[i])
-                continue;
-            if (!hasConflict(rtree, boxes[targets[i]], targets[i])) {
-                insert(rtree, boxes[targets[i]], targets[i]);
-                batch.emplace_back(targets[i]);
-                chosen[i] = true;
-            }
-        }
-        while (last < targets.size() && chosen[last]) {
-            last++;
-        }
-    }
-    return batches;
 }
 
 double tools::MemReporter::getCurrent(){

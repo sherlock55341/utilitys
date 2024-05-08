@@ -1,0 +1,13 @@
+digraph "cuda::d2h"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  rankdir="RL";
+  Node1 [id="Node000001",label="cuda::d2h",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip="Copies size bytes from src to dst, device to host."];
+  Node1 -> Node2 [id="edge1_Node000001_Node000002",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node2 [id="Node000002",label="cuda::Transfer::cpu",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$namespacecuda_1_1_transfer.html#ac7df8c372d94b09e0cb887ef439c9857",tooltip="copy num of elements from src to dst"];
+  Node1 -> Node3 [id="edge2_Node000001_Node000003",dir="back",color="steelblue1",style="solid",tooltip=" "];
+  Node3 [id="Node000003",label="cuda::Transfer::cpu",height=0.2,width=0.4,color="grey40", fillcolor="white", style="filled",URL="$namespacecuda_1_1_transfer.html#a77a90df2411ff77bef1ed3893b2d4b85",tooltip="copy num of elements to host"];
+}

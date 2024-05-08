@@ -1,3 +1,13 @@
+/**
+ * @file algo.cpp
+ * @author Chunyuan Zhao (zhaochunyuan@stu.pku.edu.cn)
+ * @brief 
+ * @version 0.1
+ * @date 2024-05-09
+ * 
+ * @copyright Copyright (c) 2024
+ * 
+ */
 #include "algo.hpp"
 
 #include <mutex>
@@ -32,119 +42,6 @@ void algo::UFS::un(int x, int y) {
   assert(x < par_.size() && x >= 0);
   assert(y < par_.size() && y >= 0);
   par_[find(x)] = find(y);
-}
-
-bool algo::runMultiFunc(std::function<void(int)> func, int N, int numThreads,
-                        MultiThreadStrategy strategy) {
-  numThreads = std::min(N, numThreads);
-  if (numThreads <= 0) {
-    assert(numThreads > 0);
-    return false;
-  }
-  if (numThreads == 1) {
-    for (int i = 0; i < N; i++) {
-      func(i);
-    }
-    return true;
-  }
-  if (strategy == GREEDY) {
-    std::mutex mtx;
-    std::vector<std::thread> ths(numThreads);
-    int globalJobIdx = 0;
-    auto threadFunc = [&](int threadIdx) {
-      int localJobIdx;
-      while (true) {
-        mtx.lock();
-        localJobIdx = globalJobIdx++;
-        mtx.unlock();
-        if (localJobIdx >= N) {
-          break;
-        }
-        func(localJobIdx);
-      }
-    };
-
-    for (int i = 0; i < numThreads; i++) {
-      ths[i] = std::thread(threadFunc, i);
-    }
-    for (int i = 0; i < numThreads; i++) {
-      ths[i].join();
-    }
-    return true;
-  } else {
-    std::vector<std::thread> ths(numThreads);
-    auto threadFunc = [&](int threadIdx) {
-      for (int i = threadIdx; i < N; i += numThreads) {
-        func(i);
-      }
-    };
-
-    for (int i = 0; i < numThreads; i++) {
-      ths[i] = std::thread(threadFunc, i);
-    }
-    for (int i = 0; i < numThreads; i++) {
-      ths[i].join();
-    }
-    return true;
-  }
-  return false;
-}
-
-bool algo::runMultiFuncWithThreadIdx(std::function<void(int, int)> func, int N,
-                                     int numThreads,
-                                     MultiThreadStrategy strategy) {
-  numThreads = std::min(N, numThreads);
-  if (numThreads <= 0) {
-    assert(numThreads > 0);
-    return false;
-  }
-  if (numThreads == 1) {
-    for (int i = 0; i < N; i++) {
-      func(i, 0);
-    }
-    return true;
-  }
-  if (strategy == GREEDY) {
-    std::mutex mtx;
-    std::vector<std::thread> ths(numThreads);
-    int globalJobIdx = 0;
-    auto threadFunc = [&](int threadIdx) {
-      int localJobIdx;
-      while (true) {
-        mtx.lock();
-        localJobIdx = globalJobIdx++;
-        mtx.unlock();
-        if (localJobIdx >= N) {
-          break;
-        }
-        func(localJobIdx, threadIdx);
-      }
-    };
-
-    for (int i = 0; i < numThreads; i++) {
-      ths[i] = std::thread(threadFunc, i);
-    }
-    for (int i = 0; i < numThreads; i++) {
-      ths[i].join();
-    }
-    return true;
-  } else {
-    std::vector<std::thread> ths(numThreads);
-    auto threadFunc = [&](int threadIdx) {
-      for (int i = threadIdx; i < N; i += numThreads) {
-        func(i, threadIdx);
-      }
-    };
-
-    for (int i = 0; i < numThreads; i++) {
-      ths[i] = std::thread(threadFunc, i);
-    }
-    for (int i = 0; i < numThreads; i++) {
-      ths[i].join();
-    }
-    return true;
-  }
-  return false;
 }
 
 UTILS_END
