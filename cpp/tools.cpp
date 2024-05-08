@@ -57,23 +57,6 @@ void tools::LogWithTimer::operator()(bool enable,
     fflush(stdout);
 }
 
-static void insert(rt &rtree, const geo::RectT<int> &box, int target) {
-    bb bbox(bp(box.lx(), box.ly()), bp(box.hx(), box.hy()));
-    rtree.insert({bbox, target});
-}
-
-static bool hasConflict(rt &rtree, const geo::RectT<int> &box, int target) {
-    bb bbox(bp(box.lx(), box.ly()), bp(box.hx(), box.hy()));
-    std::vector<std::pair<bb, int>> results;
-    rtree.query(bgi::intersects(bbox), std::back_inserter(results));
-    for (const auto &result : results) {
-        if (result.second != target) {
-            return true;
-        }
-    }
-    return false;
-}
-
 double tools::MemReporter::getCurrent(){
 #if defined(__unix__)
     long rss = 0;
