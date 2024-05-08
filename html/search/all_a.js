@@ -1,8 +1,0 @@
-var searchData=
-[
-  ['operator_21_3d_0',['operator!=',['../classgeo_1_1_point_t.html#ac0fa549ee5a08a149f87597949e79497',1,'geo::PointT::operator!=()'],['../classgeo_1_1_point_t_on_layer.html#a2a28fda621af61cbe8ef1924fe09c7c2',1,'geo::PointTOnLayer::operator!=()']]],
-  ['operator_28_29_1',['operator()',['../classtools_1_1_log_with_timer.html#a8cf1214014589bfb20277cd1d9d99ea1',1,'tools::LogWithTimer::operator()(const char *__restrict__ format, Args &amp;&amp;...args) const'],['../classtools_1_1_log_with_timer.html#a0c91f0211024bd8ecc518a335e720103',1,'tools::LogWithTimer::operator()(const char *__restrict__ format) const'],['../classtools_1_1_log_with_timer.html#ac1e376a4c1913edc3c7286937157e6cb',1,'tools::LogWithTimer::operator()(bool enable, const char *__restrict__ format, Args &amp;&amp;...args) const'],['../classtools_1_1_log_with_timer.html#a10ab1ce4472ccb34090d5e0703824560',1,'tools::LogWithTimer::operator()(bool enable, const char *__restrict__ format) const']]],
-  ['operator_3c_2',['operator&lt;',['../classgeo_1_1_point_t.html#ab648677113d01ccf0ccf7db503c18054',1,'geo::PointT::operator&lt;()'],['../classgeo_1_1_point_t_on_layer.html#a54c1ddc2dd922461bf85ed4c9f4ef49b',1,'geo::PointTOnLayer::operator&lt;()']]],
-  ['operator_3d_3d_3',['operator==',['../classgeo_1_1_point_t.html#a52329ea7742af13e6782de1cdcb26d42',1,'geo::PointT::operator==()'],['../classgeo_1_1_point_t_on_layer.html#a5988e717db7e21824f70465f63b0fc26',1,'geo::PointTOnLayer::operator==()']]],
-  ['operator_3e_4',['operator&gt;',['../classgeo_1_1_point_t.html#a3d7caf38fbb5e295e17a50d4da070805',1,'geo::PointT::operator&gt;()'],['../classgeo_1_1_point_t_on_layer.html#acef9e56804f2c3e76fd614da18cdb351',1,'geo::PointTOnLayer::operator&gt;()']]]
-];
