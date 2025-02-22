@@ -1,17 +1,17 @@
 /**
  * @file api.cu
  * @author Chunyuan Zhao (zhaochunyuan@stu.pku.edu.cn)
- * @brief 
+ * @brief
  * @version 0.1
  * @date 2024-05-09
- * 
+ *
  * @copyright Copyright (c) 2024
- * 
+ *
  */
 #include "api.hpp"
 
 namespace utils::cuda {
-void warmUpDevice(int deviceIdx){
+void warmUpDevice(int deviceIdx) {
     cudaSetDevice(deviceIdx);
     cudaFree(0);
 }
@@ -39,8 +39,8 @@ void d2d(void *dst, void *src, size_t size) {
 void err(const char *file, int line) {
     cudaError_t err = cudaGetLastError();
     if (err != cudaSuccess) {
-        std::cout << "[CUDA ERROR] : FILE [" << file << "] LINE[" << line
-                  << "] " << cudaGetErrorString(err) << std::endl;
+        std::cout << "[CUDA ERROR] : " << file << ":" << line
+                  << cudaGetErrorString(err) << std::endl;
         assert(err == cudaSuccess);
         exit(1);
     }
